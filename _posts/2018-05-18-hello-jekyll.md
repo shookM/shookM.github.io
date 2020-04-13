@@ -1,16 +1,16 @@
 ---
 layout: post
-title: 'Hello Jekyll'
-date: 2017-04-18
-author: Jekyll
+title: 'CodeReview代码审查工具-Upsource安装配置'
+date: 2020-04-05
+author: shook
 color: rgb(255,210,32)
-cover: 'http://on2171g4d.bkt.clouddn.com/jekyll-banner.png'
-tags: jekyll
+cover: '../assets/images/CodeReview-Upsource/cover.jpg'
+tags: CodeReview
 ---
 
-> Transform your plain text into static websites and blogs.
+[0.0]: > Transform your plain text into static websites and blogs.
 
-# Welcome
+# CodeReview的意义以及代码审查工具-Upsource安装配置
 
 ## Welcome
 
