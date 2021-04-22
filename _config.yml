@@ -22,7 +22,7 @@ pretty_urls:
 
 # Directory
 source_dir: source
-public_dir: root
+public_dir: dist
 tag_dir: tags
 archive_dir: archives
 category_dir: categories
@@ -102,7 +102,4 @@ theme: butterfly
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-  type: git
-  repo: https://github.com/shookM/shookM.github.io
-  # example, https://github.com/hexojs/hexojs.github.io
-  branch: shook_page
+  type: ''
