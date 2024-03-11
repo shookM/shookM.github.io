@@ -1,0 +1,384 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Linux下Supervisor和Jexus两种方式部署.NETCore3.1项目 | shook</title><meta name="keywords" content=".NETCore,Supervisor,Jexus"><meta name="author" content="Shook"><meta name="copyright" content="Shook"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="由于需要，最近在调试linux下部署.NetCore项目，所以在此记录一下  一、.NETCore3.1 环境安装以及运行测试 直接运行1~$ sudo rpm -Uvh https:&#x2F;&#x2F;packages.microsoft.com&#x2F;config&#x2F;centos&#x2F;7&#x2F;packages-microsoft-prod.rpm 1~$ sudo yum install dotnet-sdk-3.1 验证">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux下Supervisor和Jexus两种方式部署.NETCore3.1项目">
+<meta property="og:url" content="https://shookm.com/2020/04/23/Linux%E4%B8%8BSupervisor%E5%92%8CJexus%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F%E9%83%A8%E7%BD%B2.NETCore3.1%E9%A1%B9%E7%9B%AE/index.html">
+<meta property="og:site_name" content="shook">
+<meta property="og:description" content="由于需要，最近在调试linux下部署.NetCore项目，所以在此记录一下  一、.NETCore3.1 环境安装以及运行测试 直接运行1~$ sudo rpm -Uvh https:&#x2F;&#x2F;packages.microsoft.com&#x2F;config&#x2F;centos&#x2F;7&#x2F;packages-microsoft-prod.rpm 1~$ sudo yum install dotnet-sdk-3.1 验证">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://shookm.com/img/md/s-%E4%B8%AD%E9%97%B4%E4%BB%B6.jpg">
+<meta property="article:published_time" content="2020-04-23T10:53:00.000Z">
+<meta property="article:modified_time" content="2020-04-23T10:53:00.000Z">
+<meta property="article:author" content="Shook">
+<meta property="article:tag" content=".NETCore">
+<meta property="article:tag" content="Supervisor">
+<meta property="article:tag" content="Jexus">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://shookm.com/img/md/s-%E4%B8%AD%E9%97%B4%E4%BB%B6.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://shookm.com/2020/04/23/Linux%E4%B8%8BSupervisor%E5%92%8CJexus%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F%E9%83%A8%E7%BD%B2.NETCore3.1%E9%A1%B9%E7%9B%AE/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Linux下Supervisor和Jexus两种方式部署.NETCore3.1项目',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-04-23 18:53:00'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/static-butterfly/dist/css/index.min.css"><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/pic/6.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">40</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">52</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">37</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于me</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/md/t-%E4%B8%AD%E9%97%B4%E4%BB%B6.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">shook</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于me</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Linux下Supervisor和Jexus两种方式部署.NETCore3.1项目</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-04-23T10:53:00.000Z" title="发表于 2020-04-23 18:53:00">2020-04-23</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-04-23T10:53:00.000Z" title="更新于 2020-04-23 18:53:00">2020-04-23</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">中间件</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/Jexus/">Jexus</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Linux下Supervisor和Jexus两种方式部署.NETCore3.1项目"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><ul>
+<li>由于需要，最近在调试linux下部署.NetCore项目，所以在此记录一下</li>
+</ul>
+<h3 id="一、-NETCore3-1-环境安装以及运行测试"><a href="#一、-NETCore3-1-环境安装以及运行测试" class="headerlink" title="一、.NETCore3.1 环境安装以及运行测试"></a>一、.NETCore3.1 环境安装以及运行测试</h3><ul>
+<li>直接运行<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~$ sudo rpm -Uvh https://packages.microsoft.com/config/centos/7/packages-microsoft-prod.rpm</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~$ sudo yum install dotnet-sdk-3.1</span><br></pre></td></tr></table></figure></li>
+<li>验证一下：</li>
+</ul>
+<p><code>dotnet --info</code>或<code>dotnet --version</code></p>
+<p><img src="https://img2020.cnblogs.com/blog/1582377/202004/1582377-20200418172500067-992763394.png"></p>
+<h4 id="NETCore3-1环境安装具体内容可翻看以前文章-https-www-cnblogs-com-shook-p-11639799-html"><a href="#NETCore3-1环境安装具体内容可翻看以前文章-https-www-cnblogs-com-shook-p-11639799-html" class="headerlink" title=".NETCore3.1环境安装具体内容可翻看以前文章 https://www.cnblogs.com/shook/p/11639799.html"></a>.NETCore3.1环境安装具体内容可翻看以前文章 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/shook/p/11639799.html">https://www.cnblogs.com/shook/p/11639799.html</a></h4><h4 id="之后我们运行测试一下我们的-NETCore项目是否可以在本地运行起来"><a href="#之后我们运行测试一下我们的-NETCore项目是否可以在本地运行起来" class="headerlink" title="之后我们运行测试一下我们的.NETCore项目是否可以在本地运行起来"></a>之后我们运行测试一下我们的.NETCore项目是否可以在本地运行起来</h4><ul>
+<li>我这里是一个准备好的.NetCore3.1的web项目，可以看到项目文件为web.csporj</li>
+</ul>
+<p><img src="https://img2020.cnblogs.com/blog/1582377/202004/1582377-20200418211626658-1237585815.png"></p>
+<ul>
+<li><p>我们进入项目的目录，是未编译过的源代码，可以用dotnet run或dotnet run 项目名.csporj 来运行项目方便查看</p>
+</li>
+<li><p>dotnet run的官方解释：dotnet run - 无需任何显式编译或启动命令即可运行源代码。</p>
+</li>
+<li><p>具体的dotnet所有命令可以参考官方文档：<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/core/tools/dotnet-run">https://docs.microsoft.com/zh-cn/dotnet/core/tools/dotnet-run</a></p>
+</li>
+</ul>
+<p><img src="https://img2020.cnblogs.com/blog/1582377/202004/1582377-20200420091224363-914270317.png"></p>
+<ul>
+<li><p>这里启动的是本地的，记得开放端口或安全策略</p>
+</li>
+<li><p>如果程序没问题可以跳过dotnet build 直接用dotnet publish命令来进行打包编译生成发布文件用来部署</p>
+</li>
+</ul>
+<p><code>dotnet publish web.csproj --configuration Release -o /wwwroot/web/publish</code></p>
+<ul>
+<li>我这里是放到另一个目录下方便管理，进入编译后的目录</li>
+</ul>
+<p><img src="https://img2020.cnblogs.com/blog/1582377/202004/1582377-20200420093542654-454820315.png"></p>
+<ul>
+<li><p>可以看到目录已生成 web(项目名).dll</p>
+</li>
+<li><p>我们直接运行 dotnet web(项目名).dll</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">crit: Microsoft.AspNetCore.Server.Kestrel[0]</span><br><span class="line">      Unable to start Kestrel.</span><br><span class="line">System.IO.IOException: Failed to bind to address http://127.0.0.1:5000: address already in use.</span><br><span class="line"> ---&gt; Microsoft.AspNetCore.Connections.AddressInUseException: Address already in use</span><br><span class="line"> ---&gt; System.Net.Sockets.SocketException (98): Address already in use</span><br><span class="line">...............</span><br></pre></td></tr></table></figure>
+<p><img src="https://img2020.cnblogs.com/blog/1582377/202004/1582377-20200420101402833-1135274216.png"></p>
+</li>
+</ul>
+<h4 id="如果出现以上报错，说明端口占用-使用以下命令指定端口运行即可"><a href="#如果出现以上报错，说明端口占用-使用以下命令指定端口运行即可" class="headerlink" title="如果出现以上报错，说明端口占用,使用以下命令指定端口运行即可"></a>如果出现以上报错，说明端口占用,使用以下命令指定端口运行即可</h4><p><code>dotnet web.dll --urls=http://localhost:5010</code></p>
+<p><img src="https://img2020.cnblogs.com/blog/1582377/202004/1582377-20200423103256580-1787137416.png"></p>
+<h4 id="我们的项目到这就起来了，但是我们的项目有的是部署在云服务器上的，不能直接浏览，而且dotnet的命令退出项目就无法启动了，那我们可以用以下三种方式其中一种来进行-NetCore在Linux下的部署，其中第二种supervisor进程管理是需要Nginx来进行的，如没有Nginx或者不需要Nginx的请跳到第三种方式，个人建议用第三种jexus方式，supervisor配置的比较多略麻烦"><a href="#我们的项目到这就起来了，但是我们的项目有的是部署在云服务器上的，不能直接浏览，而且dotnet的命令退出项目就无法启动了，那我们可以用以下三种方式其中一种来进行-NetCore在Linux下的部署，其中第二种supervisor进程管理是需要Nginx来进行的，如没有Nginx或者不需要Nginx的请跳到第三种方式，个人建议用第三种jexus方式，supervisor配置的比较多略麻烦" class="headerlink" title="我们的项目到这就起来了，但是我们的项目有的是部署在云服务器上的，不能直接浏览，而且dotnet的命令退出项目就无法启动了，那我们可以用以下三种方式其中一种来进行.NetCore在Linux下的部署，其中第二种supervisor进程管理是需要Nginx来进行的，如没有Nginx或者不需要Nginx的请跳到第三种方式，个人建议用第三种jexus方式，supervisor配置的比较多略麻烦"></a>我们的项目到这就起来了，但是我们的项目有的是部署在云服务器上的，不能直接浏览，而且dotnet的命令退出项目就无法启动了，那我们可以用以下三种方式其中一种来进行.NetCore在Linux下的部署，其中第二种supervisor进程管理是需要Nginx来进行的，如没有Nginx或者不需要Nginx的请跳到第三种方式，个人建议用第三种jexus方式，supervisor配置的比较多略麻烦</h4><h3 id="二、supervisor进程管理-NetCore，web默认管理界面"><a href="#二、supervisor进程管理-NetCore，web默认管理界面" class="headerlink" title="二、supervisor进程管理.NetCore，web默认管理界面"></a>二、supervisor进程管理.NetCore，web默认管理界面</h3><h4 id="2-1-Nginx安装以及配置配置反向代理"><a href="#2-1-Nginx安装以及配置配置反向代理" class="headerlink" title="2.1 Nginx安装以及配置配置反向代理"></a>2.1 Nginx安装以及配置配置反向代理</h4><p>我们在上面用dotnet命令启动指定的端口是5010，我们需要把启动的5010端口映射到Nginx上80等端口</p>
+<p>nginx的介绍这里就不介绍了，这里只介绍Nginx的安装以及反向代理配置</p>
+<h5 id="2-1-1-Nginx安装"><a href="#2-1-1-Nginx安装" class="headerlink" title="2.1.1 Nginx安装"></a>2.1.1 Nginx安装</h5><ol>
+<li>首先添加Centos7 yum epel源<br><code>[root@slave1 ~]# sudo yum -y install epel-release</code></li>
+<li>yum安装Nginx<br><code>[root@slave1 ~]# sudo yum install nginx</code></li>
+<li>运行Nginx<br><code>[root@slave1 ~]# sudo systemctl start nginx</code></li>
+<li>验证是否开启<br><code>[root@slave1 ~]# ps -ef | grep nginx</code></li>
+</ol>
+<p><img src="https://img2020.cnblogs.com/blog/1582377/202004/1582377-20200423132601144-1871127158.png"></p>
+<ol start="5">
+<li>访问ip验证一下，我这里是默认的centos静态页，说明没有问题</li>
+</ol>
+<p><img src="https://img2020.cnblogs.com/blog/1582377/202004/1582377-20200423132904966-620654596.png"></p>
+<ol start="6">
+<li>Nginx设置开机启动</li>
+</ol>
+<p><code>[root@slave1 ~]# systemctl enable nginx</code></p>
+<ul>
+<li>如果访问错误可查看端口是否开放，防火墙是否关闭，等Nginx的这些操作百度查一下，这里不再赘述</li>
+</ul>
+<h5 id="2-1-2-Nginx反向代理配置"><a href="#2-1-2-Nginx反向代理配置" class="headerlink" title="2.1.2 Nginx反向代理配置"></a>2.1.2 Nginx反向代理配置</h5><ul>
+<li>进入Nginx 的配置加载目录 <code>[root@slave1 ~]# cd /etc/nginx/conf.d</code></li>
+</ul>
+<p>新建一个配置文件,具体配置文件如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    listen 9870;							# 监听端口：使用域名的话为80</span><br><span class="line">    server_name 192.168.105.191;					# IP地址，或者服务器绑定域名，在hosts做一个本地域名也可以，这里就不做演示了</span><br><span class="line">    index index.html index.htm index.php;			        # 入口文件，可不填</span><br><span class="line">    root  /www/wwwroot/publish/web/wwwroot;				# 运行目录 .NetCore web项目需要把项目目录指向到wwwroot目录</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">      proxy_pass http://localhost:5010;				# 本地需要代理的地址</span><br><span class="line">    &#125;								# 以下配置如不需要可忽略</span><br><span class="line">    location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$</span><br><span class="line">    &#123;</span><br><span class="line">        expires      30d;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location ~ .*\.(js|css)?$</span><br><span class="line">    &#123;</span><br><span class="line">        expires      12h;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location ~ /\.</span><br><span class="line">    &#123;</span><br><span class="line">        deny all;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    access_log  /www/wwwlogs/access.log;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://img2020.cnblogs.com/blog/1582377/202004/1582377-20200423152823120-1533478645.png"></p>
+<p>Nginx配置完成后执行命令<code>nginx -s reload</code>重载配置，使其生效<br>按照第一步的方法现在可以运行项目即可看到项目页面</p>
+<h4 id="2-2-Supervisor-配置守护进程"><a href="#2-2-Supervisor-配置守护进程" class="headerlink" title="2.2 Supervisor 配置守护进程"></a>2.2 Supervisor 配置守护进程</h4><p>Supervisor 是用 Python 开发的 Linux/Unix 系统下的一个进程管理工具。它可以使进程脱离终端，变为后台守护进程（daemon）。实时监控进程状态，异常退出时能自动重启。</p>
+<p>Supervisor 不支持任何版本的 Window 系统；仅支持在 Python2.4 或更高版本，但不能在任何版本的 Python 3 下工作。</p>
+<p>其主要组成部分：</p>
+<p>supervisord：Supervisor 的守护进程服务，用于接收进程管理命令；</p>
+<p>supervisorctl：Supervisor 命令行工具，用于和守护进程通信，发送管理进程的指令；</p>
+<p>Web Server：Web 端进程管理工具，提供与 supervisorctl 类似功能，管理进程；</p>
+<p>XML-RPC Interface：提供 XML-RPC 接口，请参阅 XML-RPC API文档。</p>
+<h4 id="2-2-1-安装-Supervisor"><a href="#2-2-1-安装-Supervisor" class="headerlink" title="2.2.1 安装 Supervisor"></a>2.2.1 安装 Supervisor</h4><p>官方推荐安装方法是使用easy_install，所以先执行如下命令安装 setuptools：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install python-setuptools|</span><br><span class="line">easy_install supervisor</span><br></pre></td></tr></table></figure>
+<h4 id="2-2-2-配置-Supervisor"><a href="#2-2-2-配置-Supervisor" class="headerlink" title="2.2.2 配置 Supervisor"></a>2.2.2 配置 Supervisor</h4><p>Supervisor加载默认配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir /etc/supervisor</span><br><span class="line">echo_supervisord_conf &gt; /etc/supervisor/supervisord.conf</span><br></pre></td></tr></table></figure>
+<p>打开supervisord.conf文件，可以看到一个样例配置，我们需要简单修改一下。</p>
+<p>尾部找到如下文本片段：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">;[include]</span><br><span class="line">;files = relative/directory/*.ini</span><br></pre></td></tr></table></figure>
+<p>改为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[include]</span><br><span class="line">files = conf.d/*.conf</span><br></pre></td></tr></table></figure>
+<p>设置/etc/supervisor/conf.d为 Supervisor 进程配置文件加载目录</p>
+<p>这样，Supervisor 会自动加载该目录下.conf后缀的文件作为共同服务配置。Supervisor 管理的每个进程单独写一个配置文件放在该目录下，supervisord.conf配置文件中保留公共配置。</p>
+<p>创建进程配置加载目录：<br><code>mkdir /etc/supervisor/conf.d</code><br>接下来就需要为我们已经部署的 ASP .NET Core 程序的宿主进程创建一个进程配置文件web.conf，保存并上传到/etc/supervisor/conf.d目录。</p>
+<p>配置文件web.conf内容如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[program:web]                 		                                        ;自定义名称</span><br><span class="line">command=dotnet web.dll 		 		                                ;程序启动命令</span><br><span class="line">directory=/www/wwwroot/publish/web		 		                ;命令执行的目录</span><br><span class="line">autostart=true 								        ;是否自启动</span><br><span class="line">autorestart=true 								;程序退出后自动重启</span><br><span class="line">startretries=5       							        ;启动失败自动重试次数，默认是3</span><br><span class="line">startsecs=1 									;自动重启间隔</span><br><span class="line">user=root   							                ;设置启动进程的用户，默认是root</span><br><span class="line">priority=999         							        ;进程启动优先级，值小的优先启动</span><br><span class="line">stderr_logfile=/var/log/Scorpio.WebApi.err.log                                  ;错误日志</span><br><span class="line">stdout_logfile=/var/log/Scorpio.WebApi.out.log                                  ;输出日志</span><br><span class="line">environment=ASPNETCORE_ENVIRONMENT=Production                                   ;进程环境变量</span><br><span class="line">stopsignal=INT								        ;请求停止时用来杀死程序的信号</span><br></pre></td></tr></table></figure>
+<p><img src="https://img2020.cnblogs.com/blog/1582377/202004/1582377-20200423175759397-1374903053.png"></p>
+<p>启动 Supervisor 服务，命令如下：</p>
+<p>supervisord -c /etc/supervisor/supervisord.conf</p>
+<h4 id="2-2-3-Supervisor-开机启动"><a href="#2-2-3-Supervisor-开机启动" class="headerlink" title="2.2.3 Supervisor 开机启动"></a>2.2.3 Supervisor 开机启动</h4><p>首先为 Supervisor 新建一个启动服务脚本<code>supervisor.service</code>然后保存并上传至服务器<code>/usr/lib/systemd/system/</code>目录。</p>
+<p>脚本内容如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=Supervisor daemon</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=forking</span><br><span class="line">ExecStart=/usr/bin/supervisord -c /etc/supervisor/supervisord.conf</span><br><span class="line">ExecStop=/usr/bin/supervisorctl $OPTIONS shutdown</span><br><span class="line">ExecReload=/usr/bin/supervisorctl $OPTIONS reload</span><br><span class="line">KillMode=process</span><br><span class="line">Restart=on-failure</span><br><span class="line">RestartSec=42s</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+<p>设置开启启动：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable supervisor</span><br></pre></td></tr></table></figure>
+<p>验证是否成功：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl is-enabled supervisor</span><br></pre></td></tr></table></figure>
+<p>如果输出enabled则表示设置成功，也可重启服务器验证</p>
+<h4 id="2-2-4-supervisor默认web配置"><a href="#2-2-4-supervisor默认web配置" class="headerlink" title="2.2.4 supervisor默认web配置"></a>2.2.4 supervisor默认web配置</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/supervisor/supervisord.conf</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[inet_http_server]        </span><br><span class="line">port=192.168.0.1:8989    </span><br><span class="line">username=admin             </span><br><span class="line">password=admin</span><br></pre></td></tr></table></figure>
+
+<p>有需要配置Web统一管理界面cesi的可以参考如下文章，</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/d655d8cd67bb%EF%BC%8C">https://www.jianshu.com/p/d655d8cd67bb，</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/acherson/article/details/101443310?depth_1-utm_source=distribute.pc_relevant.none-task-blog-OPENSEARCH-1&amp;utm_source=distribute.pc_relevant.none-task-blog-OPENSEARCH-1">https://blog.csdn.net/acherson/article/details/101443310?depth_1-utm_source=distribute.pc_relevant.none-task-blog-OPENSEARCH-1&amp;utm_source=distribute.pc_relevant.none-task-blog-OPENSEARCH-1</a></p>
+<p>我的python环境冲突就不在此演示了</p>
+<h3 id="三、Jexus部署-NetCore"><a href="#三、Jexus部署-NetCore" class="headerlink" title="三、Jexus部署.NetCore"></a>三、Jexus部署.NetCore</h3><h4 id="如果之前安装了Supervisor-需要将其停止，再把开机启动禁止-禁用开机启动命令：systemctl-disable-supervisord-查看是否为开机启动命令：systemctl-is-enabled-supervisord"><a href="#如果之前安装了Supervisor-需要将其停止，再把开机启动禁止-禁用开机启动命令：systemctl-disable-supervisord-查看是否为开机启动命令：systemctl-is-enabled-supervisord" class="headerlink" title="如果之前安装了Supervisor 需要将其停止，再把开机启动禁止,禁用开机启动命令：systemctl disable supervisord ,查看是否为开机启动命令：systemctl is-enabled supervisord "></a>如果之前安装了Supervisor 需要将其停止，再把开机启动禁止,禁用开机启动命令：<code>systemctl disable supervisord </code>,查看是否为开机启动命令：<code>systemctl is-enabled supervisord </code></h4><ul>
+<li><p>Jexus官网：<a target="_blank" rel="noopener" href="https://www.jexus.org/">https://www.jexus.org/</a></p>
+</li>
+<li><p>jexus指南：<a target="_blank" rel="noopener" href="https://www.linuxdot.net/bbsfile-3084">https://www.linuxdot.net/bbsfile-3084</a></p>
+</li>
+<li><p>简单介绍一下Jexus </p>
+</li>
+</ul>
+<p>Jexus 即 Jexus Web Server，简称JWS，是Linux平台上 的一款ASP.NET WEB服务器。它是 Linux、Unix、FreeBSD 等非Windows系统架设 ASP.NET WEB 服务器的核心程序。</p>
+<p>将HTTP自宿主应用程序（如Asp.net Core应用程序、Node.js应用程序等）统一纳入Jexus的工作进程序列进行管控（启动、停止、重启、崩溃后自动恢复等管理、监控功能），为Asp.Net Core应用程序进入企业化生产环境提供了强有力的平台保障。使用 jexus整合asp.net core的优点：　　</p>
+<ol>
+<li><p>支持多站点，同一端口可以同时支持任何多的asp.net core应用程序；</p>
+</li>
+<li><p>应用程序启动、停止、重启与站点的启动、停止、重启等操作一致，无需手工管理asp.net core应用程序；</p>
+</li>
+<li><p>具有应用程序崩溃后自动重启功能，为企业级不间断运行保障；</p>
+</li>
+<li><p>提供与IIS相同的HTTP环境参数。</p>
+</li>
+<li><p>具有比反向代理更高的性能优势。</p>
+</li>
+</ol>
+<h4 id="3-1-安装jexus独立版（2020-04已更新到6-2-x版本）"><a href="#3-1-安装jexus独立版（2020-04已更新到6-2-x版本）" class="headerlink" title="3.1 安装jexus独立版（2020.04已更新到6.2.x版本）"></a>3.1 安装jexus独立版（2020.04已更新到6.2.x版本）</h4><p>有两种安装方式：</p>
+<ul>
+<li>1是使用官方自动安装脚本：</li>
+</ul>
+<p><code>[root@slave2 ~]# curl https://jexus.org/release/x64/install.sh|sudo sh</code></p>
+<p>安装完成的目录地址为<code>/usr/jexus</code></p>
+<p>若提示没有Wget，手动yum install wget -y即可</p>
+<ul>
+<li>2是使用手动安装，可以自定义目录，我们这里也安装到/usr/lexus/目录下方便理解<figure class="highlight plaintext"><figcaption><span>/usr/jexus</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://linuxdot.net/down/jexus-6.2.x-x64.tar.gz</span><br><span class="line">tar zxvf jexus-6.2.x-x64.tar.gz</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="3-2-jexus配置文件"><a href="#3-2-jexus配置文件" class="headerlink" title="3.2 jexus配置文件"></a>3.2 jexus配置文件</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@slave2 ~]# cd siteconf/                    #进入配置文件目录</span><br><span class="line">[root@slave2 siteconf ~]# vim web                #新建一个配置文件名为web，并进行编辑</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">######################</span><br><span class="line"># Web Site: web </span><br><span class="line">########################################</span><br><span class="line">																				</span><br><span class="line">port=80						# 监听端口：使用域名的话为80</span><br><span class="line">root=/ /www/wwwroot/publish/web/wwwroot		# 运行目录 .NetCore web项目需要把项目目录指向到wwwroot目录，不支持虚拟目录</span><br><span class="line">hosts=web.test.com				# 服务器绑定域名，在hosts做一个本地域名也可以，也可以是IP地址，这里就不做演示了</span><br><span class="line"># User=www-data</span><br><span class="line"></span><br><span class="line"># AspNet.Workers=2  # Set the number of asp.net worker processes. Defauit is 1.</span><br><span class="line"></span><br><span class="line"># addr=0.0.0.0</span><br><span class="line"># CheckQuery=false</span><br><span class="line"># NoLog=true</span><br><span class="line">																				                </span><br><span class="line">AppHost=&#123;                                        # 新建AppHost配置</span><br><span class="line">  cmd=dotnet /www/wwwroot/publish/web/web.dll;	 # 进行dotnet 项目名.dll运行操作</span><br><span class="line">  root=/www/wwwroot/publish/web/; 	         # 项目的工作目录</span><br><span class="line">  # port=5001					 # 可选项。表示这个应用程序的侦听端口，多个端口用英文逗号分隔</span><br><span class="line">  #OutLog=/log/out.txt;				 # OutLog:可选项。表示将这个应用程序的控制台输出重定向到指定的文件（需填写完整路径）；</span><br><span class="line">  #ErrLog=/log/out.txt;		                 # ErrLog:可选项。表示将这个应用程序的异常输出重定向到指定的文件（需填写完整路径）,如果不原意输出日志，可以不用OutLog项。这时, jexus会自动关掉控制台输出</span><br><span class="line">  &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>确保配置和项目文件无误后，进入目录运行jexus</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@slave2 ~]#  cd /usr/jexus</span><br><span class="line">[root@slave2 jexus]# sudo ./jws start</span><br><span class="line"> ... OK.</span><br></pre></td></tr></table></figure>
+<p>进入本地域名查看，成功运行<br><img src="https://img2020.cnblogs.com/blog/1582377/202004/1582377-20200423161038867-2050455169.png"></p>
+<h4 id="3-3-jexus设置开机启动"><a href="#3-3-jexus设置开机启动" class="headerlink" title="3.3 jexus设置开机启动"></a>3.3 jexus设置开机启动</h4><ul>
+<li>1.新建 jexus.service<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /lib/systemd/system</span><br><span class="line">vim jexus.service</span><br></pre></td></tr></table></figure>
+添加如下配置<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=jexus</span><br><span class="line">After=network.target</span><br><span class="line">[Service]</span><br><span class="line">Type=forking</span><br><span class="line">ExecStart=/usr/jexus/jws start</span><br><span class="line">ExecReload=/usr/jexus/jws restart</span><br><span class="line">ExecStop=/usr/jexus/jws stop</span><br><span class="line">PrivateTmp=true</span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>jexus加入服务： <code>systemctl enable jexus.service</code></p>
+<p>启动jexus服务： <code>systemctl start jexus.service</code></p>
+<p>查看jexus服务状态： <code>systemctl status jexus.service</code> </p>
+<p><img src="https://img2020.cnblogs.com/blog/1582377/202006/1582377-20200612154404404-1220339871.png"></p>
+<p>reboot执行重启测试一下，看到站点启动即成功</p>
+<p>相比supervisor对比，jexus更加便捷方便部署，日志的部分配置上即可查看，这里也就不表了</p>
+<h3 id="四、Linux下-Netcore跨平台其他方式部署"><a href="#四、Linux下-Netcore跨平台其他方式部署" class="headerlink" title="四、Linux下.Netcore跨平台其他方式部署"></a>四、Linux下.Netcore跨平台其他方式部署</h3><p>还有pm2方式来进行部署，我以前使用pm2来进行部署vue的项目，感觉十分好用，比Supervisor方便配置本来想写上pm2的部署方式，想起来看过晓晨写过pm2守护.NETCore的相关文章特别详细，<br>所以有需要的传送门：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/stulzq/p/9775973.html">https://www.cnblogs.com/stulzq/p/9775973.html</a></p>
+<p>还有systemctl构建后台服务等方式，根据自己情况选一种适合自己即可</p>
+<p>相关资料：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/esofar/p/8043792.html#2535191668">https://www.cnblogs.com/esofar/p/8043792.html#2535191668</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Shook</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://shookm.com/2020/04/23/Linux%E4%B8%8BSupervisor%E5%92%8CJexus%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F%E9%83%A8%E7%BD%B2.NETCore3.1%E9%A1%B9%E7%9B%AE/">https://shookm.com/2020/04/23/Linux下Supervisor和Jexus两种方式部署.NETCore3.1项目/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://shookm.com" target="_blank">shook</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/NETCore/">.NETCore</a><a class="post-meta__tags" href="/tags/Supervisor/">Supervisor</a><a class="post-meta__tags" href="/tags/Jexus/">Jexus</a></div><div class="post_share"><div class="social-share" data-image="/img/md/s-%E4%B8%AD%E9%97%B4%E4%BB%B6.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/04/28/frp%E4%B8%8B%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E5%AE%9E%E7%8E%B0https%E5%8D%8F%E8%AE%AE/"><img class="prev-cover" src="/img/md/s-%E5%85%B6%E4%BB%96.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">frp下反向代理实现https协议</div></div></a></div><div class="next-post pull-right"><a href="/2020/03/04/Ambari2.7.4+HDP3.1.4%E5%AE%89%E8%A3%85%20Centos7%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85/"><img class="next-cover" src="/img/md/s-%E5%85%B6%E4%BB%96.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Ambari2.7.4+HDP3.1.4安装 Centos7离线安装</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2020/08/17/Docker%E9%83%A8%E7%BD%B2skywalking,%E4%BB%A5%E5%8F%8A.NETCore%E9%A1%B9%E7%9B%AEIIS%E9%83%A8%E7%BD%B2%E9%9B%86%E6%88%90/" title="Docker部署skywalking,以及.NETCore项目IIS部署集成"><img class="cover" src="/img/md/s-%E4%B8%AD%E9%97%B4%E4%BB%B6.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-17</div><div class="title">Docker部署skywalking,以及.NETCore项目IIS部署集成</div></div></a></div><div><a href="/2019/10/09/Linux%E4%B8%8B%E5%AE%89%E8%A3%85.NETCore6.0%E4%BB%A5%E5%8F%8ADocker%E4%B8%8B%E5%AE%89%E8%A3%85.NETCore6.0/" title="Linux下安装.NETCore5.0以及Docker下安装.NETCore5.0"><img class="cover" src="/img/md/s-%E8%AF%AD%E8%A8%80.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-10-09</div><div class="title">Linux下安装.NETCore5.0以及Docker下安装.NETCore5.0</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div id="comment-switch"><span class="first-comment">Twikoo</span><span class="switch-btn"></span><span class="second-comment">Livere</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div><div><div id="lv-container" data-id="city" data-uid="MTAyMC81NTE1Mi8zMTYxOQ=="></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/pic/6.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Shook</div><div class="author-info__description">个人生活感悟</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">40</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">52</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">37</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/shookM"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/shookm" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81-NETCore3-1-%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8A%E8%BF%90%E8%A1%8C%E6%B5%8B%E8%AF%95"><span class="toc-number">1.</span> <span class="toc-text">一、.NETCore3.1 环境安装以及运行测试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#NETCore3-1%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%85%B7%E4%BD%93%E5%86%85%E5%AE%B9%E5%8F%AF%E7%BF%BB%E7%9C%8B%E4%BB%A5%E5%89%8D%E6%96%87%E7%AB%A0-https-www-cnblogs-com-shook-p-11639799-html"><span class="toc-number">1.1.</span> <span class="toc-text">.NETCore3.1环境安装具体内容可翻看以前文章 https:&#x2F;&#x2F;www.cnblogs.com&#x2F;shook&#x2F;p&#x2F;11639799.html</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B9%8B%E5%90%8E%E6%88%91%E4%BB%AC%E8%BF%90%E8%A1%8C%E6%B5%8B%E8%AF%95%E4%B8%80%E4%B8%8B%E6%88%91%E4%BB%AC%E7%9A%84-NETCore%E9%A1%B9%E7%9B%AE%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E5%9C%A8%E6%9C%AC%E5%9C%B0%E8%BF%90%E8%A1%8C%E8%B5%B7%E6%9D%A5"><span class="toc-number">1.2.</span> <span class="toc-text">之后我们运行测试一下我们的.NETCore项目是否可以在本地运行起来</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E6%9E%9C%E5%87%BA%E7%8E%B0%E4%BB%A5%E4%B8%8A%E6%8A%A5%E9%94%99%EF%BC%8C%E8%AF%B4%E6%98%8E%E7%AB%AF%E5%8F%A3%E5%8D%A0%E7%94%A8-%E4%BD%BF%E7%94%A8%E4%BB%A5%E4%B8%8B%E5%91%BD%E4%BB%A4%E6%8C%87%E5%AE%9A%E7%AB%AF%E5%8F%A3%E8%BF%90%E8%A1%8C%E5%8D%B3%E5%8F%AF"><span class="toc-number">1.3.</span> <span class="toc-text">如果出现以上报错，说明端口占用,使用以下命令指定端口运行即可</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%88%91%E4%BB%AC%E7%9A%84%E9%A1%B9%E7%9B%AE%E5%88%B0%E8%BF%99%E5%B0%B1%E8%B5%B7%E6%9D%A5%E4%BA%86%EF%BC%8C%E4%BD%86%E6%98%AF%E6%88%91%E4%BB%AC%E7%9A%84%E9%A1%B9%E7%9B%AE%E6%9C%89%E7%9A%84%E6%98%AF%E9%83%A8%E7%BD%B2%E5%9C%A8%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84%EF%BC%8C%E4%B8%8D%E8%83%BD%E7%9B%B4%E6%8E%A5%E6%B5%8F%E8%A7%88%EF%BC%8C%E8%80%8C%E4%B8%94dotnet%E7%9A%84%E5%91%BD%E4%BB%A4%E9%80%80%E5%87%BA%E9%A1%B9%E7%9B%AE%E5%B0%B1%E6%97%A0%E6%B3%95%E5%90%AF%E5%8A%A8%E4%BA%86%EF%BC%8C%E9%82%A3%E6%88%91%E4%BB%AC%E5%8F%AF%E4%BB%A5%E7%94%A8%E4%BB%A5%E4%B8%8B%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%85%B6%E4%B8%AD%E4%B8%80%E7%A7%8D%E6%9D%A5%E8%BF%9B%E8%A1%8C-NetCore%E5%9C%A8Linux%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2%EF%BC%8C%E5%85%B6%E4%B8%AD%E7%AC%AC%E4%BA%8C%E7%A7%8Dsupervisor%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86%E6%98%AF%E9%9C%80%E8%A6%81Nginx%E6%9D%A5%E8%BF%9B%E8%A1%8C%E7%9A%84%EF%BC%8C%E5%A6%82%E6%B2%A1%E6%9C%89Nginx%E6%88%96%E8%80%85%E4%B8%8D%E9%9C%80%E8%A6%81Nginx%E7%9A%84%E8%AF%B7%E8%B7%B3%E5%88%B0%E7%AC%AC%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F%EF%BC%8C%E4%B8%AA%E4%BA%BA%E5%BB%BA%E8%AE%AE%E7%94%A8%E7%AC%AC%E4%B8%89%E7%A7%8Djexus%E6%96%B9%E5%BC%8F%EF%BC%8Csupervisor%E9%85%8D%E7%BD%AE%E7%9A%84%E6%AF%94%E8%BE%83%E5%A4%9A%E7%95%A5%E9%BA%BB%E7%83%A6"><span class="toc-number">1.4.</span> <span class="toc-text">我们的项目到这就起来了，但是我们的项目有的是部署在云服务器上的，不能直接浏览，而且dotnet的命令退出项目就无法启动了，那我们可以用以下三种方式其中一种来进行.NetCore在Linux下的部署，其中第二种supervisor进程管理是需要Nginx来进行的，如没有Nginx或者不需要Nginx的请跳到第三种方式，个人建议用第三种jexus方式，supervisor配置的比较多略麻烦</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81supervisor%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86-NetCore%EF%BC%8Cweb%E9%BB%98%E8%AE%A4%E7%AE%A1%E7%90%86%E7%95%8C%E9%9D%A2"><span class="toc-number">2.</span> <span class="toc-text">二、supervisor进程管理.NetCore，web默认管理界面</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-Nginx%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8A%E9%85%8D%E7%BD%AE%E9%85%8D%E7%BD%AE%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 Nginx安装以及配置配置反向代理</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#2-1-1-Nginx%E5%AE%89%E8%A3%85"><span class="toc-number">2.1.1.</span> <span class="toc-text">2.1.1 Nginx安装</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-1-2-Nginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE"><span class="toc-number">2.1.2.</span> <span class="toc-text">2.1.2 Nginx反向代理配置</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-Supervisor-%E9%85%8D%E7%BD%AE%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 Supervisor 配置守护进程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-1-%E5%AE%89%E8%A3%85-Supervisor"><span class="toc-number">2.3.</span> <span class="toc-text">2.2.1 安装 Supervisor</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-2-%E9%85%8D%E7%BD%AE-Supervisor"><span class="toc-number">2.4.</span> <span class="toc-text">2.2.2 配置 Supervisor</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-3-Supervisor-%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8"><span class="toc-number">2.5.</span> <span class="toc-text">2.2.3 Supervisor 开机启动</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-4-supervisor%E9%BB%98%E8%AE%A4web%E9%85%8D%E7%BD%AE"><span class="toc-number">2.6.</span> <span class="toc-text">2.2.4 supervisor默认web配置</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81Jexus%E9%83%A8%E7%BD%B2-NetCore"><span class="toc-number">3.</span> <span class="toc-text">三、Jexus部署.NetCore</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E6%9E%9C%E4%B9%8B%E5%89%8D%E5%AE%89%E8%A3%85%E4%BA%86Supervisor-%E9%9C%80%E8%A6%81%E5%B0%86%E5%85%B6%E5%81%9C%E6%AD%A2%EF%BC%8C%E5%86%8D%E6%8A%8A%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8%E7%A6%81%E6%AD%A2-%E7%A6%81%E7%94%A8%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8%E5%91%BD%E4%BB%A4%EF%BC%9Asystemctl-disable-supervisord-%E6%9F%A5%E7%9C%8B%E6%98%AF%E5%90%A6%E4%B8%BA%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8%E5%91%BD%E4%BB%A4%EF%BC%9Asystemctl-is-enabled-supervisord"><span class="toc-number">3.1.</span> <span class="toc-text">如果之前安装了Supervisor 需要将其停止，再把开机启动禁止,禁用开机启动命令：systemctl disable supervisord ,查看是否为开机启动命令：systemctl is-enabled supervisord </span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-%E5%AE%89%E8%A3%85jexus%E7%8B%AC%E7%AB%8B%E7%89%88%EF%BC%882020-04%E5%B7%B2%E6%9B%B4%E6%96%B0%E5%88%B06-2-x%E7%89%88%E6%9C%AC%EF%BC%89"><span class="toc-number">3.2.</span> <span class="toc-text">3.1 安装jexus独立版（2020.04已更新到6.2.x版本）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-jexus%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">3.3.</span> <span class="toc-text">3.2 jexus配置文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-jexus%E8%AE%BE%E7%BD%AE%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8"><span class="toc-number">3.4.</span> <span class="toc-text">3.3 jexus设置开机启动</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E3%80%81Linux%E4%B8%8B-Netcore%E8%B7%A8%E5%B9%B3%E5%8F%B0%E5%85%B6%E4%BB%96%E6%96%B9%E5%BC%8F%E9%83%A8%E7%BD%B2"><span class="toc-number">4.</span> <span class="toc-text">四、Linux下.Netcore跨平台其他方式部署</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/02/22/%E8%AF%B4%E4%B8%80%E8%AF%B4/" title="说一说"><img src="/img/md/s-sys.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="说一说"/></a><div class="content"><a class="title" href="/2022/02/22/%E8%AF%B4%E4%B8%80%E8%AF%B4/" title="说一说">说一说</a><time datetime="2022-02-22T06:00:00.000Z" title="发表于 2022-02-22 14:00:00">2022-02-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/17/GitLab%E7%AC%94%E8%AE%B0%20-%20%E5%8D%87%E7%BA%A7gitlab%20%E7%89%88%E6%9C%AC%E5%90%8E%E9%A1%B9%E7%9B%AE%E7%9A%84webhook%E9%A1%B5%E9%9D%A2%E6%98%BE%E7%A4%BA500%E9%97%AE%E9%A2%98/" title="GitLab笔记 - 升级gitlab 版本后项目的webhook页面显示500问题"><img src="/img/md/s-DEVOPS.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="GitLab笔记 - 升级gitlab 版本后项目的webhook页面显示500问题"/></a><div class="content"><a class="title" href="/2022/02/17/GitLab%E7%AC%94%E8%AE%B0%20-%20%E5%8D%87%E7%BA%A7gitlab%20%E7%89%88%E6%9C%AC%E5%90%8E%E9%A1%B9%E7%9B%AE%E7%9A%84webhook%E9%A1%B5%E9%9D%A2%E6%98%BE%E7%A4%BA500%E9%97%AE%E9%A2%98/" title="GitLab笔记 - 升级gitlab 版本后项目的webhook页面显示500问题">GitLab笔记 - 升级gitlab 版本后项目的webhook页面显示500问题</a><time datetime="2022-02-17T06:47:00.000Z" title="发表于 2022-02-17 14:47:00">2022-02-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/17/gitbook%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/" title="gitbook安装部署"><img src="/img/md/s-%E4%B8%AD%E9%97%B4%E4%BB%B6.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="gitbook安装部署"/></a><div class="content"><a class="title" href="/2022/02/17/gitbook%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/" title="gitbook安装部署">gitbook安装部署</a><time datetime="2022-02-17T06:47:00.000Z" title="发表于 2022-02-17 14:47:00">2022-02-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/10/16/Rancher%202.5%20%E5%8D%95%E6%9C%BA%E7%AE%80%E5%8D%95%E9%83%A8%E7%BD%B2/" title="Rancher 2.5 单机简单部署"><img src="/img/md/s-k8s.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Rancher 2.5 单机简单部署"/></a><div class="content"><a class="title" href="/2021/10/16/Rancher%202.5%20%E5%8D%95%E6%9C%BA%E7%AE%80%E5%8D%95%E9%83%A8%E7%BD%B2/" title="Rancher 2.5 单机简单部署">Rancher 2.5 单机简单部署</a><time datetime="2021-10-16T02:53:00.000Z" title="发表于 2021-10-16 10:53:00">2021-10-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/10/13/curl%20%E5%BF%BD%E7%95%A5https%E7%9A%84ssl%E7%9A%84%E8%AF%81%E4%B9%A6%E9%AA%8C%E8%AF%81/" title="curl 忽略https的ssl的证书验证"><img src="/img/md/s-%E5%85%B6%E4%BB%96.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="curl 忽略https的ssl的证书验证"/></a><div class="content"><a class="title" href="/2021/10/13/curl%20%E5%BF%BD%E7%95%A5https%E7%9A%84ssl%E7%9A%84%E8%AF%81%E4%B9%A6%E9%AA%8C%E8%AF%81/" title="curl 忽略https的ssl的证书验证">curl 忽略https的ssl的证书验证</a><time datetime="2021-10-13T06:15:00.000Z" title="发表于 2021-10-13 14:15:00">2021-10-13</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2024 By Shook</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">By Node 14.17 on Kubernetes 1.25.2 </br> <a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/"><span>吉ICP备18005491号-1</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(()=>{
+  const $countDom = document.getElementById('twikoo-count')
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo-rouge.vercel.app/',
+      region: ''
+    }, null))
+  }
+
+  const getCount = () => {
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-rouge.vercel.app/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      $countDom.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const loadTwikoo = (bool = false) => {
+    if (typeof twikoo === 'object') {
+      init()
+      bool && $countDom && setTimeout(getCount,0)
+    } else {
+      getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(()=> {
+        init()
+        bool && $countDom && setTimeout(getCount,0)
+      })
+    }
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo(true)
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script><script>function loadLivere () {
+  if (typeof LivereTower === 'object') {
+    window.LivereTower.init()
+  }
+  else {
+    (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+    })(document, 'script');
+  }
+}
+
+if ('Twikoo' === 'Livere' || !false) {
+  if (false) btf.loadComment(document.getElementById('lv-container'), loadLivere)
+  else loadLivere()
+}
+else {
+  function loadOtherComment () {
+    loadLivere()
+  }
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

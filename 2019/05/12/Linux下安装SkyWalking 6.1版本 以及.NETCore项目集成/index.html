@@ -1,0 +1,283 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Linux下安装SkyWalking 6.1版本 以及.NETCore项目集成 | shook</title><meta name="keywords" content="APM,中间件,Skywalking"><meta name="author" content="Shook"><meta name="copyright" content="Shook"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="今天安装redis出现些之前安装不曾出现错误，一并在此做个记录一、安装redis及出现错误首先下载redis，官方下载地址页面：https:&#x2F;&#x2F;redis.io&#x2F;download 我们这里选择稳定版6.0.1版本  正常安装步骤如下： 123456[root@localhost ~]# yum install gcc[root@localhost ~]# cd &#x2F;usr&#x2F;local[root@lo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux下安装SkyWalking 6.1版本 以及.NETCore项目集成">
+<meta property="og:url" content="https://shookm.com/2019/05/12/Linux%E4%B8%8B%E5%AE%89%E8%A3%85SkyWalking%206.1%E7%89%88%E6%9C%AC%20%E4%BB%A5%E5%8F%8A.NETCore%E9%A1%B9%E7%9B%AE%E9%9B%86%E6%88%90/index.html">
+<meta property="og:site_name" content="shook">
+<meta property="og:description" content="今天安装redis出现些之前安装不曾出现错误，一并在此做个记录一、安装redis及出现错误首先下载redis，官方下载地址页面：https:&#x2F;&#x2F;redis.io&#x2F;download 我们这里选择稳定版6.0.1版本  正常安装步骤如下： 123456[root@localhost ~]# yum install gcc[root@localhost ~]# cd &#x2F;usr&#x2F;local[root@lo">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://shookm.com/img/md/s-%E4%B8%AD%E9%97%B4%E4%BB%B6.jpg">
+<meta property="article:published_time" content="2019-05-12T08:33:00.000Z">
+<meta property="article:modified_time" content="2019-05-12T08:33:00.000Z">
+<meta property="article:author" content="Shook">
+<meta property="article:tag" content="APM">
+<meta property="article:tag" content="中间件">
+<meta property="article:tag" content="Skywalking">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://shookm.com/img/md/s-%E4%B8%AD%E9%97%B4%E4%BB%B6.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://shookm.com/2019/05/12/Linux%E4%B8%8B%E5%AE%89%E8%A3%85SkyWalking%206.1%E7%89%88%E6%9C%AC%20%E4%BB%A5%E5%8F%8A.NETCore%E9%A1%B9%E7%9B%AE%E9%9B%86%E6%88%90/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Linux下安装SkyWalking 6.1版本 以及.NETCore项目集成',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2019-05-12 16:33:00'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/static-butterfly/dist/css/index.min.css"><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/pic/6.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">40</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">52</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">37</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于me</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/md/t-%E4%B8%AD%E9%97%B4%E4%BB%B6.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">shook</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于me</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Linux下安装SkyWalking 6.1版本 以及.NETCore项目集成</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2019-05-12T08:33:00.000Z" title="发表于 2019-05-12 16:33:00">2019-05-12</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2019-05-12T08:33:00.000Z" title="更新于 2019-05-12 16:33:00">2019-05-12</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">中间件</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/SkyWalking/">SkyWalking</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Linux下安装SkyWalking 6.1版本 以及.NETCore项目集成"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h3 id="今天安装redis出现些之前安装不曾出现错误，一并在此做个记录"><a href="#今天安装redis出现些之前安装不曾出现错误，一并在此做个记录" class="headerlink" title="今天安装redis出现些之前安装不曾出现错误，一并在此做个记录"></a><strong>今天安装redis出现些之前安装不曾出现错误，一并在此做个记录</strong></h3><h3 id="一、安装redis及出现错误"><a href="#一、安装redis及出现错误" class="headerlink" title="一、安装redis及出现错误"></a>一、安装redis及出现错误</h3><p><strong>首先下载redis，官方下载地址页面：<a target="_blank" rel="noopener" href="https://redis.io/download">https://redis.io/download</a></strong></p>
+<p><strong>我们这里选择稳定版6.0.1版本</strong></p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2ab84759a2b94dee8114a161fdc3a0c7~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<p><strong>正常安装步骤如下：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# yum install gcc</span><br><span class="line">[root@localhost ~]# cd /usr/local</span><br><span class="line">[root@localhost local]# wget http://download.redis.io/releases/redis-6.0.1.tar.gz</span><br><span class="line">[root@localhost local]# tar -xvf redis-6.0.1.tar.gz</span><br><span class="line">[root@localhost local]# cd /usr/local/redis-6.0.1/</span><br><span class="line">[root@localhost redis-6.0.1]# make PREFIX=/usr/local/redis install</span><br></pre></td></tr></table></figure>
+
+<p><strong>这里报了如下错误</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">make[1]: *** [server.o] 错误 1</span><br><span class="line">make[1]: 离开目录“/usr/redis-6.0.1/src”</span><br><span class="line">make: *** [all] 错误 2</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">server.c:2402:11: 错误：‘struct redisServer’没有名为‘assert_file’的成员</span><br><span class="line">     server.assert_file = &quot;&lt;no file&gt;&quot;;</span><br><span class="line">           ^</span><br><span class="line">server.c:2403:11: 错误：‘struct redisServer’没有名为‘assert_line’的成员</span><br><span class="line">     server.assert_line = 0;</span><br><span class="line">           ^</span><br><span class="line">server.c:2404:11: 错误：‘struct redisServer’没有名为‘bug_report_start’的成员</span><br><span class="line">     server.bug_report_start = 0;</span><br><span class="line">           ^</span><br><span class="line">server.c:2405:11: 错误：‘struct redisServer’没有名为‘watchdog_period’的成员</span><br><span class="line">     server.watchdog_period = 0;</span><br><span class="line">           ^</span><br><span class="line">server.c:2411:11: 错误：‘struct redisServer’没有名为‘lua_always_replicate_commands’的成员</span><br><span class="line">     server.lua_always_replicate_commands = 1;</span><br><span class="line">           ^</span><br><span class="line">server.c: 在函数‘restartServer’中:</span><br><span class="line">server.c:2464:32: 错误：‘struct redisServer’没有名为‘maxclients’的成员</span><br><span class="line">     for (j = 3; j &lt; (int)server.maxclients + 1024; j++) &#123;</span><br><span class="line">                                ^</span><br><span class="line">server.c: 在函数‘adjustOpenFilesLimit’中:</span><br><span class="line">server.c:2491:29: 错误：‘struct redisServer’没有名为‘maxclients’的成员</span><br><span class="line">     rlim_t maxfiles = server.maxclients+CONFIG_MIN_RESERVED_FDS;</span><br><span class="line">                             ^</span><br><span class="line">server.c:2497:15: 错误：‘struct redisServer’没有名为‘maxclients’的成员</span><br><span class="line">         server.maxclients = 1024-CONFIG_MIN_RESERVED_FDS;</span><br><span class="line">               ^</span><br><span class="line">server.c:2529:53: 错误：‘struct redisServer’没有名为‘maxclients’的成员</span><br><span class="line">                 unsigned int old_maxclients = server.maxclients;</span><br><span class="line">                                                     ^</span><br><span class="line">server.c:2530:23: 错误：‘struct redisServer’没有名为‘maxclients’的成员</span><br><span class="line">                 server.maxclients = bestlimit-CONFIG_MIN_RESERVED_FDS;</span><br><span class="line">                       ^</span><br><span class="line">server.c:2554:59: 错误：‘struct redisServer’没有名为‘maxclients’的成员</span><br><span class="line">                     (unsigned long long) bestlimit, server.maxclients);</span><br><span class="line">                                                           ^</span><br><span class="line">server.c: 在函数‘checkTcpBacklogSettings’中:</span><br><span class="line">server.c:2574:48: 错误：‘struct redisServer’没有名为‘tcp_backlog’的成员</span><br><span class="line">         if (somaxconn &gt; 0 &amp;&amp; somaxconn &lt; server.tcp_backlog) &#123;</span><br><span class="line">                                                ^</span><br><span class="line">server.c:2575:171: 错误：‘struct redisServer’没有名为‘tcp_backlog’的成员</span><br><span class="line">             serverLog(LL_WARNING,&quot;WARNING: The TCP backlog setting of %d cannot be enforced because /proc/sys/net            /core/somaxconn is set to the lower value of %d.&quot;, server.tcp_backlog, somaxconn);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/256681443b354fbb925a2e2732888760~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9e879bdc76a54a98bbeb1ccf4d5ea0f8~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/07e44fd244834223a3810b0f13bdfa57~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<p><strong>解决办法：升级gcc版本</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis-6.0.1]# gcc -v                             # 查看gcc版本</span><br><span class="line">[root@localhost redis-6.0.1]# yum -y install centos-release-scl  # 升级到9.1版本</span><br><span class="line">[root@localhost redis-6.0.1]# yum -y install devtoolset-9-gcc devtoolset-9-gcc-c++ devtoolset-9-binutils</span><br><span class="line">[root@localhost redis-6.0.1]# scl enable devtoolset-9 bash</span><br><span class="line">以上为临时启用，如果要长期使用gcc 9.1的话：</span><br><span class="line">[root@localhost redis-6.0.1]# echo &quot;source /opt/rh/devtoolset-9/enable&quot; &gt;&gt;/etc/profile</span><br></pre></td></tr></table></figure>
+
+<p><strong>再执行编译：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@mmjredis redis-6.0.1]# make PREFIX=/usr/local/redis install</span><br></pre></td></tr></table></figure>
+
+<p><strong>安装成功会出现：Hint: It’s a good idea to run ‘make test’ ;)</strong></p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a89bb76f4fc242859c7b196f37562abc~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<p><strong>我们执行一下<code>make test</code>来进行测试一下</strong></p>
+<p><strong>出现了如下错误:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis-6.0.1]# make test</span><br><span class="line">cd src &amp;&amp; make test</span><br><span class="line">make[1]: 进入目录“/usr/redis-6.0.1/src”</span><br><span class="line">    CC Makefile.dep</span><br><span class="line">make[1]: 离开目录“/usr/redis-6.0.1/src”</span><br><span class="line">make[1]: 进入目录“/usr/redis-6.0.1/src”</span><br><span class="line">You need tcl 8.5 or newer in order to run the Redis test</span><br><span class="line">make[1]: *** [test] 错误 1</span><br><span class="line">make[1]: 离开目录“/usr/redis-6.0.1/src”</span><br><span class="line">make: *** [test] 错误 2</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/629a916ee6c84f589fa35f7b673d0a37~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<p><strong>解决办法：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis-6.0.1]# yum install tcl</span><br><span class="line">[root@localhost redis-6.0.1]# make test</span><br></pre></td></tr></table></figure>
+
+<p><strong>测试成功如下：</strong> <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/184921ab5bcb4329a6f30b4a41365746~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<p><strong>先运行redis试一下：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis-6.0.1]# /usr/local/redis-6.0.1/src/redis-server /usr/local/redis-6.0.1/redis.conf</span><br><span class="line">32101:C 13 May 2020 17:01:48.248 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo</span><br><span class="line">32101:C 13 May 2020 17:01:48.248 # Redis version=6.0.1, bits=64, commit=00000000, modified=0, pid=32101, just started</span><br><span class="line">32101:C 13 May 2020 17:01:48.248 # Configuration loaded</span><br><span class="line">32101:M 13 May 2020 17:01:48.249 * Increased maximum number of open files to 10032 (it was originally set to 1024).</span><br><span class="line">                _._</span><br><span class="line">           _.-``__ &#x27;&#x27;-._</span><br><span class="line">      _.-``    `.  `_.  &#x27;&#x27;-._           Redis 6.0.1 (00000000/0) 64 bit</span><br><span class="line">  .-`` .-```.  ```/    _.,_ &#x27;&#x27;-._</span><br><span class="line"> (    &#x27;      ,       .-`  | `,    )     Running in standalone mode</span><br><span class="line"> |`-._`-...-` __...-.``-._|&#x27;` _.-&#x27;|     Port: 6379</span><br><span class="line"> |    `-._   `._    /     _.-&#x27;    |     PID: 32101</span><br><span class="line">  `-._    `-._  `-./  _.-&#x27;    _.-&#x27;</span><br><span class="line"> |`-._`-._    `-.__.-&#x27;    _.-&#x27;_.-&#x27;|</span><br><span class="line"> |    `-._`-._        _.-&#x27;_.-&#x27;    |           http://redis.io</span><br><span class="line">  `-._    `-._`-.__.-&#x27;_.-&#x27;    _.-&#x27;</span><br><span class="line"> |`-._`-._    `-.__.-&#x27;    _.-&#x27;_.-&#x27;|</span><br><span class="line"> |    `-._`-._        _.-&#x27;_.-&#x27;    |</span><br><span class="line">  `-._    `-._`-.__.-&#x27;_.-&#x27;    _.-&#x27;</span><br><span class="line">      `-._    `-.__.-&#x27;    _.-&#x27;</span><br><span class="line">          `-._        _.-&#x27;</span><br><span class="line">              `-.__.-&#x27;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5922850a303c438784dc8becca7798c5~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<h3 id="二、后台启动"><a href="#二、后台启动" class="headerlink" title="二、后台启动"></a>二、后台启动</h3><p><strong>简单修改后台启动</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis-6.0.1]# vim redis.conf</span><br></pre></td></tr></table></figure>
+
+<p><strong>daemonize no 改成 daemonize yes</strong></p>
+<p><strong>再来运行一下</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis-6.0.1]# /usr/redis-6.0.1/src/redis-server /usr/redis-6.0.1/redis.conf</span><br><span class="line">30385:C 13 May 2020 16:57:58.918 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo</span><br><span class="line">30385:C 13 May 2020 16:57:58.918 # Redis version=6.0.1, bits=64, commit=00000000, modified=0, pid=30385, just started</span><br><span class="line">30385:C 13 May 2020 16:57:58.918 # Configuration loaded</span><br></pre></td></tr></table></figure>
+
+<p><strong>后台运行成功，我们查看一下，并终止程序</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis-6.0.1]# ps -aux|grep redis| grep -v grep</span><br><span class="line">root     29836  0.0  0.0 162416  7912 ?        Ssl  16:56   0:00 /usr/redis-6.0.1/src/redis-server 127.0.0.1:6379</span><br><span class="line">[root@localhost redis-6.0.1]# kill -9 29836</span><br></pre></td></tr></table></figure>
+
+<p><strong>我们这里用到的是用后台systemctl启动redis</strong></p>
+<p><strong>首先把redis加入service服务</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /lib/systemd/system/redis.service</span><br></pre></td></tr></table></figure>
+
+<p><strong>写入</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=redis</span><br><span class="line">After=network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=forking</span><br><span class="line">PIDFile=/var/run/redis_6379.pid</span><br><span class="line">ExecStart=/usr/local/redis-6.0.1/src/redis-server /usr/local/redis-6.0.1/etc/redis.conf</span><br><span class="line">ExecReload=/bin/kill -s HUP $MAINPID</span><br><span class="line">ExecStop=/bin/kill -s QUIT $MAINPID</span><br><span class="line">PrivateTmp=true</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意路径问题，以及PIDFile的路径对应的是redis-6.0.1/redis.conf里面的PIDFile</strong></p>
+<p><strong>wq保存退出即可</strong></p>
+<p><strong>接着运行以下</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis-6.0.1]# systemctl enable redis.service                   # 加入开机启动</span><br><span class="line"></span><br><span class="line">[root@localhost redis-6.0.1]# systemctl is-enabled redis.service               # 查看开机是否启动成功</span><br><span class="line">enabled</span><br><span class="line"></span><br><span class="line">[root@localhost redis-6.0.1]# systemctl start redis                            #开启redis服务</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@localhost redis-6.0.1]# systemctl status redis //查看redis运行状态</span><br></pre></td></tr></table></figure>
+
+<p><strong>如果启动出现问题，可以通过<code>systemctl status redis</code>来查看日志修复</strong></p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/29d27952bab04be3834319c8593813ac~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<p><strong>如图已经启动成功</strong><a target="_blank" rel="noopener" href="http://www.shookm.com/wp-content/themes/begin/inc/go.php?url=https://www.cnblogs.com/savorboard/p/asp-net-core-skywalking.html">http://www.shookm.com/wp-content/themes/begin/inc/go.php?url=https://www.cnblogs.com/savorboard/p/asp-net-core-skywalking.html</a>)</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Shook</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://shookm.com/2019/05/12/Linux%E4%B8%8B%E5%AE%89%E8%A3%85SkyWalking%206.1%E7%89%88%E6%9C%AC%20%E4%BB%A5%E5%8F%8A.NETCore%E9%A1%B9%E7%9B%AE%E9%9B%86%E6%88%90/">https://shookm.com/2019/05/12/Linux下安装SkyWalking 6.1版本 以及.NETCore项目集成/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://shookm.com" target="_blank">shook</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/APM/">APM</a><a class="post-meta__tags" href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/">中间件</a><a class="post-meta__tags" href="/tags/Skywalking/">Skywalking</a></div><div class="post_share"><div class="social-share" data-image="/img/md/s-%E4%B8%AD%E9%97%B4%E4%BB%B6.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2019/07/15/jenkins%E6%9E%84%E5%BB%BA%E7%BB%93%E6%9E%9C%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E6%8F%90%E9%86%92/"><img class="prev-cover" src="/img/md/s-DEVOPS.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">jenkins构建结果企业微信提醒</div></div></a></div><div class="next-post pull-right"><a href="/2019/02/20/Jenkins%20%E6%90%AD%E5%BB%BA%20.NET%20Core%20%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E7%8E%AF%E5%A2%83/"><img class="next-cover" src="/img/md/s-DEVOPS.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Jenkins 搭建 .NET Core 持续集成环境</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/09/28/Skywalking%E8%AE%B0%E5%BD%95-%E6%97%A5%E5%BF%97%E9%9B%86%E6%88%90%E7%B3%BB%E7%BB%9F%E4%BB%A5%E5%8F%8A%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98/" title="Skywalking记录-日志集成系统以及出现的问题"><img class="cover" src="/img/md/s-%E4%B8%AD%E9%97%B4%E4%BB%B6.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-28</div><div class="title">Skywalking记录-日志集成系统以及出现的问题</div></div></a></div><div><a href="/2020/08/17/Docker%E9%83%A8%E7%BD%B2skywalking,%E4%BB%A5%E5%8F%8A.NETCore%E9%A1%B9%E7%9B%AEIIS%E9%83%A8%E7%BD%B2%E9%9B%86%E6%88%90/" title="Docker部署skywalking,以及.NETCore项目IIS部署集成"><img class="cover" src="/img/md/s-%E4%B8%AD%E9%97%B4%E4%BB%B6.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-17</div><div class="title">Docker部署skywalking,以及.NETCore项目IIS部署集成</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div id="comment-switch"><span class="first-comment">Twikoo</span><span class="switch-btn"></span><span class="second-comment">Livere</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div><div><div id="lv-container" data-id="city" data-uid="MTAyMC81NTE1Mi8zMTYxOQ=="></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/pic/6.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Shook</div><div class="author-info__description">个人生活感悟</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">40</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">52</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">37</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/shookM"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/shookm" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8A%E5%A4%A9%E5%AE%89%E8%A3%85redis%E5%87%BA%E7%8E%B0%E4%BA%9B%E4%B9%8B%E5%89%8D%E5%AE%89%E8%A3%85%E4%B8%8D%E6%9B%BE%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF%EF%BC%8C%E4%B8%80%E5%B9%B6%E5%9C%A8%E6%AD%A4%E5%81%9A%E4%B8%AA%E8%AE%B0%E5%BD%95"><span class="toc-number">1.</span> <span class="toc-text">今天安装redis出现些之前安装不曾出现错误，一并在此做个记录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%AE%89%E8%A3%85redis%E5%8F%8A%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF"><span class="toc-number">2.</span> <span class="toc-text">一、安装redis及出现错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%90%8E%E5%8F%B0%E5%90%AF%E5%8A%A8"><span class="toc-number">3.</span> <span class="toc-text">二、后台启动</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/02/22/%E8%AF%B4%E4%B8%80%E8%AF%B4/" title="说一说"><img src="/img/md/s-sys.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="说一说"/></a><div class="content"><a class="title" href="/2022/02/22/%E8%AF%B4%E4%B8%80%E8%AF%B4/" title="说一说">说一说</a><time datetime="2022-02-22T06:00:00.000Z" title="发表于 2022-02-22 14:00:00">2022-02-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/17/GitLab%E7%AC%94%E8%AE%B0%20-%20%E5%8D%87%E7%BA%A7gitlab%20%E7%89%88%E6%9C%AC%E5%90%8E%E9%A1%B9%E7%9B%AE%E7%9A%84webhook%E9%A1%B5%E9%9D%A2%E6%98%BE%E7%A4%BA500%E9%97%AE%E9%A2%98/" title="GitLab笔记 - 升级gitlab 版本后项目的webhook页面显示500问题"><img src="/img/md/s-DEVOPS.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="GitLab笔记 - 升级gitlab 版本后项目的webhook页面显示500问题"/></a><div class="content"><a class="title" href="/2022/02/17/GitLab%E7%AC%94%E8%AE%B0%20-%20%E5%8D%87%E7%BA%A7gitlab%20%E7%89%88%E6%9C%AC%E5%90%8E%E9%A1%B9%E7%9B%AE%E7%9A%84webhook%E9%A1%B5%E9%9D%A2%E6%98%BE%E7%A4%BA500%E9%97%AE%E9%A2%98/" title="GitLab笔记 - 升级gitlab 版本后项目的webhook页面显示500问题">GitLab笔记 - 升级gitlab 版本后项目的webhook页面显示500问题</a><time datetime="2022-02-17T06:47:00.000Z" title="发表于 2022-02-17 14:47:00">2022-02-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/17/gitbook%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/" title="gitbook安装部署"><img src="/img/md/s-%E4%B8%AD%E9%97%B4%E4%BB%B6.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="gitbook安装部署"/></a><div class="content"><a class="title" href="/2022/02/17/gitbook%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/" title="gitbook安装部署">gitbook安装部署</a><time datetime="2022-02-17T06:47:00.000Z" title="发表于 2022-02-17 14:47:00">2022-02-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/10/16/Rancher%202.5%20%E5%8D%95%E6%9C%BA%E7%AE%80%E5%8D%95%E9%83%A8%E7%BD%B2/" title="Rancher 2.5 单机简单部署"><img src="/img/md/s-k8s.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Rancher 2.5 单机简单部署"/></a><div class="content"><a class="title" href="/2021/10/16/Rancher%202.5%20%E5%8D%95%E6%9C%BA%E7%AE%80%E5%8D%95%E9%83%A8%E7%BD%B2/" title="Rancher 2.5 单机简单部署">Rancher 2.5 单机简单部署</a><time datetime="2021-10-16T02:53:00.000Z" title="发表于 2021-10-16 10:53:00">2021-10-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/10/13/curl%20%E5%BF%BD%E7%95%A5https%E7%9A%84ssl%E7%9A%84%E8%AF%81%E4%B9%A6%E9%AA%8C%E8%AF%81/" title="curl 忽略https的ssl的证书验证"><img src="/img/md/s-%E5%85%B6%E4%BB%96.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="curl 忽略https的ssl的证书验证"/></a><div class="content"><a class="title" href="/2021/10/13/curl%20%E5%BF%BD%E7%95%A5https%E7%9A%84ssl%E7%9A%84%E8%AF%81%E4%B9%A6%E9%AA%8C%E8%AF%81/" title="curl 忽略https的ssl的证书验证">curl 忽略https的ssl的证书验证</a><time datetime="2021-10-13T06:15:00.000Z" title="发表于 2021-10-13 14:15:00">2021-10-13</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2024 By Shook</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">By Node 14.17 on Kubernetes 1.25.2 </br> <a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/"><span>吉ICP备18005491号-1</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(()=>{
+  const $countDom = document.getElementById('twikoo-count')
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo-rouge.vercel.app/',
+      region: ''
+    }, null))
+  }
+
+  const getCount = () => {
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-rouge.vercel.app/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      $countDom.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const loadTwikoo = (bool = false) => {
+    if (typeof twikoo === 'object') {
+      init()
+      bool && $countDom && setTimeout(getCount,0)
+    } else {
+      getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(()=> {
+        init()
+        bool && $countDom && setTimeout(getCount,0)
+      })
+    }
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo(true)
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script><script>function loadLivere () {
+  if (typeof LivereTower === 'object') {
+    window.LivereTower.init()
+  }
+  else {
+    (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+    })(document, 'script');
+  }
+}
+
+if ('Twikoo' === 'Livere' || !false) {
+  if (false) btf.loadComment(document.getElementById('lv-container'), loadLivere)
+  else loadLivere()
+}
+else {
+  function loadOtherComment () {
+    loadLivere()
+  }
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Linux下安装MongoDB及安装问题 | shook</title><meta name="keywords" content="Linux,MongoDB"><meta name="author" content="Shook"><meta name="copyright" content="Shook"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="MongoDB安装过程以及问题记录一、MongoDB安装下载MongoDB官方地址：https:&#x2F;&#x2F;www.mongodb.com&#x2F;download-center&#x2F;community 可能需要注册一下 我这里是Centos7系统所以选择的是RHEL7.0的TGZ,其他系统自行选择 如果不想注册在这里下载也可以：https:&#x2F;&#x2F;www.mongodb.org&#x2F;dl&#x2F;linux  下载步骤：12345">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux下安装MongoDB及安装问题">
+<meta property="og:url" content="https://shookm.com/2020/05/13/Linux%E4%B8%8B%E5%AE%89%E8%A3%85MongoDB%E5%8F%8A%E5%AE%89%E8%A3%85%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="shook">
+<meta property="og:description" content="MongoDB安装过程以及问题记录一、MongoDB安装下载MongoDB官方地址：https:&#x2F;&#x2F;www.mongodb.com&#x2F;download-center&#x2F;community 可能需要注册一下 我这里是Centos7系统所以选择的是RHEL7.0的TGZ,其他系统自行选择 如果不想注册在这里下载也可以：https:&#x2F;&#x2F;www.mongodb.org&#x2F;dl&#x2F;linux  下载步骤：12345">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://shookm.com/img/md/s-%E6%95%B0%E6%8D%AE%E5%BA%93.jpg">
+<meta property="article:published_time" content="2020-05-13T09:48:00.000Z">
+<meta property="article:modified_time" content="2020-05-13T09:48:00.000Z">
+<meta property="article:author" content="Shook">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="MongoDB">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://shookm.com/img/md/s-%E6%95%B0%E6%8D%AE%E5%BA%93.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://shookm.com/2020/05/13/Linux%E4%B8%8B%E5%AE%89%E8%A3%85MongoDB%E5%8F%8A%E5%AE%89%E8%A3%85%E9%97%AE%E9%A2%98/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Linux下安装MongoDB及安装问题',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-05-13 17:48:00'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/static-butterfly/dist/css/index.min.css"><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/pic/6.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">40</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">52</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">37</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于me</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/md/t-%E6%95%B0%E6%8D%AE%E5%BA%93.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">shook</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于me</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Linux下安装MongoDB及安装问题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-05-13T09:48:00.000Z" title="发表于 2020-05-13 17:48:00">2020-05-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-05-13T09:48:00.000Z" title="更新于 2020-05-13 17:48:00">2020-05-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/MongoDB/">MongoDB</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Linux下安装MongoDB及安装问题"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h3 id="MongoDB安装过程以及问题记录"><a href="#MongoDB安装过程以及问题记录" class="headerlink" title="MongoDB安装过程以及问题记录"></a>MongoDB安装过程以及问题记录</h3><h3 id="一、MongoDB安装"><a href="#一、MongoDB安装" class="headerlink" title="一、MongoDB安装"></a>一、MongoDB安装</h3><h4 id="下载MongoDB"><a href="#下载MongoDB" class="headerlink" title="下载MongoDB"></a>下载MongoDB</h4><p><strong>官方地址：<a target="_blank" rel="noopener" href="https://www.mongodb.com/download-center/community">https://www.mongodb.com/download-center/community</a> 可能需要注册一下</strong></p>
+<h4 id="我这里是Centos7系统所以选择的是RHEL7-0的TGZ-其他系统自行选择"><a href="#我这里是Centos7系统所以选择的是RHEL7-0的TGZ-其他系统自行选择" class="headerlink" title="我这里是Centos7系统所以选择的是RHEL7.0的TGZ,其他系统自行选择"></a>我这里是Centos7系统所以选择的是RHEL7.0的TGZ,其他系统自行选择</h4><p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/37ac1d34cf674f38ac6a839bb58132e8~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<p><strong>如果不想注册在这里下载也可以：<a target="_blank" rel="noopener" href="https://www.mongodb.org/dl/linux">https://www.mongodb.org/dl/linux</a></strong></p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/60a15b55012a42f783121d6d7c23ebf4~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<h4 id="下载步骤："><a href="#下载步骤：" class="headerlink" title="下载步骤："></a>下载步骤：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# curl -O https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel70-4.2.6.tgz     # 下载</span><br><span class="line">[root@localhost ~]# tar -zxvf mongodb-linux-x86_64-rhel70-4.2.6.tgz                                    # 解压                                </span><br><span class="line">[root@localhost ~]# mv  mongodb-linux-x86_64-rhel70-4.2.6/ /usr/local/mongodb                          # 移动到/usr/local/mongodb</span><br><span class="line">[root@localhost ~]# export PATH=/usr/local/mongodb/bin:$PATH                                           # 加入PATH环境，自定义路径记得更换</span><br><span class="line">[root@localhost ~]# cd /usr/local/mongodb                                                              # 进入目录</span><br><span class="line">[root@localhost mongodb]# sudo mkdir -p /data/mongodb                                                  # /data下创建mongodb 用于存放MongoDB数据</span><br><span class="line">[root@localhost mongodb]# sudo chmod -r 777 /data/mongodb                                              # 给予777权限</span><br><span class="line">[root@localhost data]# cd /data/mongodb/                                                               # 进入目录</span><br><span class="line">[root@localhost mongodb]# sudo mkdir logs                                                              # 创建日志目录</span><br><span class="line">[root@localhost mongodb]# cd logs                                                                      # 进入目录</span><br><span class="line">[root@localhost logs]# touch mongodb.log                                                               # 创建MongoDBlog文件</span><br><span class="line">[root@localhost logs]# cd /usr/local/mongodb/bin                                                       # 进入安装目录bin目录</span><br><span class="line">[root@localhost bin]# sudo vim mongodb.conf                                                            # 编辑配置文件          </span><br><span class="line">dbpath = /data/mongodb                                                                                 # 数据存放位置</span><br><span class="line">logpath = /data/mongodb/logs/mongodb.log                                                               # 日志文件存放位置</span><br><span class="line">port = 27017                                                                                           # MongoDB端口</span><br><span class="line">fork = true                                                                                            # 以守护程序的方式启用，即在后台运行</span><br><span class="line"># nohttpinterface = true                                                                               # 这个配置需要去掉，不然会出现如下错误</span><br><span class="line"># Error parsing INI config file: unrecognised option &#x27;nohttpinterface&#x27;</span><br><span class="line">auth=true                                                                                              # 权限方式启动</span><br><span class="line">bind_ip=0.0.0.0</span><br><span class="line">[root@localhost bin]# ./mongod -f ./mongodb.conf                                                       # 启动MongoDB</span><br><span class="line">[root@localhost bin]# ps -ef|grep mongodb                                                              # 查看运行状态</span><br><span class="line">root     34125     1  0 09:43 ?        00:00:08 ./mongod -f ./mongodb.conf</span><br><span class="line">root     53204 33869  0 10:23 pts/0    00:00:00 grep --color=auto mongodb</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="运行状态如图："><a href="#运行状态如图：" class="headerlink" title="运行状态如图："></a>运行状态如图：</h4><p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d015d38bffeb436c9df91be5b990ed73~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<h3 id="访问一下："><a href="#访问一下：" class="headerlink" title="访问一下："></a>访问一下：</h3><p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b3195ea9177f45d68cad2ae3f31e02ed~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<h3 id="二、MongoDB后台启动"><a href="#二、MongoDB后台启动" class="headerlink" title="二、MongoDB后台启动"></a>二、MongoDB后台启动</h3><h4 id="我们这里用到的是用后台systemctl启动MongoDB"><a href="#我们这里用到的是用后台systemctl启动MongoDB" class="headerlink" title="我们这里用到的是用后台systemctl启动MongoDB"></a>我们这里用到的是用后台systemctl启动MongoDB</h4><h4 id="首先把MongoDB加入service服务"><a href="#首先把MongoDB加入service服务" class="headerlink" title="首先把MongoDB加入service服务"></a>首先把MongoDB加入service服务</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /lib/systemd/system/mongodb.service</span><br></pre></td></tr></table></figure>
+
+<h4 id="写入"><a href="#写入" class="headerlink" title="写入"></a>写入</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=redis</span><br><span class="line">After=network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=forking</span><br><span class="line">ExecStart=/usr/local/mongodb/bin/mongod -f /usr/local/mongodb/bin/mongodb.conf</span><br><span class="line">ExecReload=/bin/kill -s HUP $MAINPID</span><br><span class="line">ExecStop=/bin/kill -s QUIT $MAINPID</span><br><span class="line">PrivateTmp=true</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="wq保存退出即可"><a href="#wq保存退出即可" class="headerlink" title="wq保存退出即可"></a>wq保存退出即可</h4><h4 id="接着运行以下，记得终止之前打开的MongoDB的进程"><a href="#接着运行以下，记得终止之前打开的MongoDB的进程" class="headerlink" title="接着运行以下，记得终止之前打开的MongoDB的进程"></a>接着运行以下，记得终止之前打开的MongoDB的进程</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis-6.0.1]# systemctl enable mongodb.service                   # 加入开机启动</span><br><span class="line"></span><br><span class="line">[root@localhost redis-6.0.1]# systemctl is-enabled mongodb.service               # 查看开机是否启动成功</span><br><span class="line">enabled</span><br><span class="line"></span><br><span class="line">[root@localhost redis-6.0.1]# systemctl start mongodb                            # 开启mongoDB服务</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@localhost redis-6.0.1]# systemctl status mongodb                           # 查看mongoDB运行状态</span><br></pre></td></tr></table></figure>
+
+<h4 id="如果启动出现问题，可以通过systemctl-status-mongodb来查看日志修复"><a href="#如果启动出现问题，可以通过systemctl-status-mongodb来查看日志修复" class="headerlink" title="如果启动出现问题，可以通过systemctl status mongodb来查看日志修复"></a>如果启动出现问题，可以通过<code>systemctl status mongodb</code>来查看日志修复</h4><h4 id="如图已经启动成功"><a href="#如图已经启动成功" class="headerlink" title="如图已经启动成功"></a>如图已经启动成功</h4><p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3df87f48303241bca07d82ce49a9e2cf~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<h4 id="最后做一个软连接方便运行"><a href="#最后做一个软连接方便运行" class="headerlink" title="最后做一个软连接方便运行"></a>最后做一个软连接方便运行</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost bin]# ln -s /usr/local/mongodb/bin/mongo /usr/bin/mongo</span><br><span class="line">[root@localhost bin]# mongo</span><br><span class="line">MongoDB shell version v4.2.6</span><br><span class="line">connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&amp;gssapiServiceName=mongodb</span><br><span class="line">Implicit session: session &#123; &quot;id&quot; : UUID(&quot;6924698e-44ae-4d01-a0ab-013210c61330&quot;) &#125;</span><br><span class="line">MongoDB server version: 4.2.6</span><br><span class="line">&gt; ^C</span><br><span class="line">bye</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Shook</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://shookm.com/2020/05/13/Linux%E4%B8%8B%E5%AE%89%E8%A3%85MongoDB%E5%8F%8A%E5%AE%89%E8%A3%85%E9%97%AE%E9%A2%98/">https://shookm.com/2020/05/13/Linux下安装MongoDB及安装问题/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://shookm.com" target="_blank">shook</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Linux/">Linux</a><a class="post-meta__tags" href="/tags/MongoDB/">MongoDB</a></div><div class="post_share"><div class="social-share" data-image="/img/md/s-%E6%95%B0%E6%8D%AE%E5%BA%93.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/05/18/Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><img class="prev-cover" src="/img/md/s-%E4%B8%AD%E9%97%B4%E4%BB%B6.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Git常用命令</div></div></a></div><div class="next-post pull-right"><a href="/2020/05/13/Linux%E4%B8%8B%E5%AE%89%E8%A3%85Redis%E5%8F%8Amake%E5%AE%89%E8%A3%85%E9%97%AE%E9%A2%98/"><img class="next-cover" src="/img/md/s-%E6%95%B0%E6%8D%AE%E5%BA%93.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Linux下安装Redis及make安装问题</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2020/04/28/Linux-fork%20bomb/" title="Linux-fork bomb"><img class="cover" src="/img/md/s-%E8%AF%AD%E8%A8%80.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-04-28</div><div class="title">Linux-fork bomb</div></div></a></div><div><a href="/2021/07/07/Linux%E4%B8%8B%E5%AE%89%E8%A3%85Chrome%E4%BB%A5%E5%8F%8AChromeDriver/" title="Linux下安装Chrome以及ChromeDriver"><img class="cover" src="/img/md/s-%E8%AF%AD%E8%A8%80.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-07</div><div class="title">Linux下安装Chrome以及ChromeDriver</div></div></a></div><div><a href="/2020/05/13/Linux%E4%B8%8B%E5%AE%89%E8%A3%85Redis%E5%8F%8Amake%E5%AE%89%E8%A3%85%E9%97%AE%E9%A2%98/" title="Linux下安装Redis及make安装问题"><img class="cover" src="/img/md/s-%E6%95%B0%E6%8D%AE%E5%BA%93.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-13</div><div class="title">Linux下安装Redis及make安装问题</div></div></a></div><div><a href="/2021/01/29/Linux%E4%B8%8B%E5%AE%89%E8%A3%85SQLServer2019/" title="Linux下安装SQLServer2019"><img class="cover" src="/img/md/s-%E6%95%B0%E6%8D%AE%E5%BA%93.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-29</div><div class="title">Linux下安装SQLServer2019</div></div></a></div><div><a href="/2021/01/14/Nginx%E8%BD%AC%E5%8F%91%E8%B7%A8%E5%9F%9F%E5%BC%95%E5%8F%91%E7%9A%84%E9%97%AE%E9%A2%98-%E8%BD%AC%E5%8F%91%E8%AF%B7%E6%B1%82header%E5%A4%B4%E4%B8%AD%E5%90%AB%E6%9C%89%E4%B8%8B%E5%88%92%E7%BA%BF%EF%BC%8C%E6%97%A0%E6%B3%95%E8%BD%AC%E5%8F%91%E5%8F%96%E5%80%BC/" title="Nginx转发跨域引发的问题-转发请求header头中含有下划线，无法转发取值"><img class="cover" src="/img/md/s-%E4%B8%AD%E9%97%B4%E4%BB%B6.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-14</div><div class="title">Nginx转发跨域引发的问题-转发请求header头中含有下划线，无法转发取值</div></div></a></div><div><a href="/2021/01/20/linux-fuck/" title="linux的小命令-fuck"><img class="cover" src="/img/md/s-%E8%AF%AD%E8%A8%80.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-20</div><div class="title">linux的小命令-fuck</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div id="comment-switch"><span class="first-comment">Twikoo</span><span class="switch-btn"></span><span class="second-comment">Livere</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div><div><div id="lv-container" data-id="city" data-uid="MTAyMC81NTE1Mi8zMTYxOQ=="></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/pic/6.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Shook</div><div class="author-info__description">个人生活感悟</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">40</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">52</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">37</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/shookM"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/shookm" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#MongoDB%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B%E4%BB%A5%E5%8F%8A%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95"><span class="toc-number">1.</span> <span class="toc-text">MongoDB安装过程以及问题记录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81MongoDB%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text">一、MongoDB安装</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BDMongoDB"><span class="toc-number">2.1.</span> <span class="toc-text">下载MongoDB</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%88%91%E8%BF%99%E9%87%8C%E6%98%AFCentos7%E7%B3%BB%E7%BB%9F%E6%89%80%E4%BB%A5%E9%80%89%E6%8B%A9%E7%9A%84%E6%98%AFRHEL7-0%E7%9A%84TGZ-%E5%85%B6%E4%BB%96%E7%B3%BB%E7%BB%9F%E8%87%AA%E8%A1%8C%E9%80%89%E6%8B%A9"><span class="toc-number">2.2.</span> <span class="toc-text">我这里是Centos7系统所以选择的是RHEL7.0的TGZ,其他系统自行选择</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E6%AD%A5%E9%AA%A4%EF%BC%9A"><span class="toc-number">2.3.</span> <span class="toc-text">下载步骤：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E7%8A%B6%E6%80%81%E5%A6%82%E5%9B%BE%EF%BC%9A"><span class="toc-number">2.4.</span> <span class="toc-text">运行状态如图：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E4%B8%80%E4%B8%8B%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">访问一下：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81MongoDB%E5%90%8E%E5%8F%B0%E5%90%AF%E5%8A%A8"><span class="toc-number">4.</span> <span class="toc-text">二、MongoDB后台启动</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%88%91%E4%BB%AC%E8%BF%99%E9%87%8C%E7%94%A8%E5%88%B0%E7%9A%84%E6%98%AF%E7%94%A8%E5%90%8E%E5%8F%B0systemctl%E5%90%AF%E5%8A%A8MongoDB"><span class="toc-number">4.1.</span> <span class="toc-text">我们这里用到的是用后台systemctl启动MongoDB</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A6%96%E5%85%88%E6%8A%8AMongoDB%E5%8A%A0%E5%85%A5service%E6%9C%8D%E5%8A%A1"><span class="toc-number">4.2.</span> <span class="toc-text">首先把MongoDB加入service服务</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%99%E5%85%A5"><span class="toc-number">4.3.</span> <span class="toc-text">写入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#wq%E4%BF%9D%E5%AD%98%E9%80%80%E5%87%BA%E5%8D%B3%E5%8F%AF"><span class="toc-number">4.4.</span> <span class="toc-text">wq保存退出即可</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8E%A5%E7%9D%80%E8%BF%90%E8%A1%8C%E4%BB%A5%E4%B8%8B%EF%BC%8C%E8%AE%B0%E5%BE%97%E7%BB%88%E6%AD%A2%E4%B9%8B%E5%89%8D%E6%89%93%E5%BC%80%E7%9A%84MongoDB%E7%9A%84%E8%BF%9B%E7%A8%8B"><span class="toc-number">4.5.</span> <span class="toc-text">接着运行以下，记得终止之前打开的MongoDB的进程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E6%9E%9C%E5%90%AF%E5%8A%A8%E5%87%BA%E7%8E%B0%E9%97%AE%E9%A2%98%EF%BC%8C%E5%8F%AF%E4%BB%A5%E9%80%9A%E8%BF%87systemctl-status-mongodb%E6%9D%A5%E6%9F%A5%E7%9C%8B%E6%97%A5%E5%BF%97%E4%BF%AE%E5%A4%8D"><span class="toc-number">4.6.</span> <span class="toc-text">如果启动出现问题，可以通过systemctl status mongodb来查看日志修复</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E5%9B%BE%E5%B7%B2%E7%BB%8F%E5%90%AF%E5%8A%A8%E6%88%90%E5%8A%9F"><span class="toc-number">4.7.</span> <span class="toc-text">如图已经启动成功</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E5%81%9A%E4%B8%80%E4%B8%AA%E8%BD%AF%E8%BF%9E%E6%8E%A5%E6%96%B9%E4%BE%BF%E8%BF%90%E8%A1%8C"><span class="toc-number">4.8.</span> <span class="toc-text">最后做一个软连接方便运行</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/02/22/%E8%AF%B4%E4%B8%80%E8%AF%B4/" title="说一说"><img src="/img/md/s-sys.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="说一说"/></a><div class="content"><a class="title" href="/2022/02/22/%E8%AF%B4%E4%B8%80%E8%AF%B4/" title="说一说">说一说</a><time datetime="2022-02-22T06:00:00.000Z" title="发表于 2022-02-22 14:00:00">2022-02-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/17/GitLab%E7%AC%94%E8%AE%B0%20-%20%E5%8D%87%E7%BA%A7gitlab%20%E7%89%88%E6%9C%AC%E5%90%8E%E9%A1%B9%E7%9B%AE%E7%9A%84webhook%E9%A1%B5%E9%9D%A2%E6%98%BE%E7%A4%BA500%E9%97%AE%E9%A2%98/" title="GitLab笔记 - 升级gitlab 版本后项目的webhook页面显示500问题"><img src="/img/md/s-DEVOPS.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="GitLab笔记 - 升级gitlab 版本后项目的webhook页面显示500问题"/></a><div class="content"><a class="title" href="/2022/02/17/GitLab%E7%AC%94%E8%AE%B0%20-%20%E5%8D%87%E7%BA%A7gitlab%20%E7%89%88%E6%9C%AC%E5%90%8E%E9%A1%B9%E7%9B%AE%E7%9A%84webhook%E9%A1%B5%E9%9D%A2%E6%98%BE%E7%A4%BA500%E9%97%AE%E9%A2%98/" title="GitLab笔记 - 升级gitlab 版本后项目的webhook页面显示500问题">GitLab笔记 - 升级gitlab 版本后项目的webhook页面显示500问题</a><time datetime="2022-02-17T06:47:00.000Z" title="发表于 2022-02-17 14:47:00">2022-02-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/17/gitbook%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/" title="gitbook安装部署"><img src="/img/md/s-%E4%B8%AD%E9%97%B4%E4%BB%B6.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="gitbook安装部署"/></a><div class="content"><a class="title" href="/2022/02/17/gitbook%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/" title="gitbook安装部署">gitbook安装部署</a><time datetime="2022-02-17T06:47:00.000Z" title="发表于 2022-02-17 14:47:00">2022-02-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/10/16/Rancher%202.5%20%E5%8D%95%E6%9C%BA%E7%AE%80%E5%8D%95%E9%83%A8%E7%BD%B2/" title="Rancher 2.5 单机简单部署"><img src="/img/md/s-k8s.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Rancher 2.5 单机简单部署"/></a><div class="content"><a class="title" href="/2021/10/16/Rancher%202.5%20%E5%8D%95%E6%9C%BA%E7%AE%80%E5%8D%95%E9%83%A8%E7%BD%B2/" title="Rancher 2.5 单机简单部署">Rancher 2.5 单机简单部署</a><time datetime="2021-10-16T02:53:00.000Z" title="发表于 2021-10-16 10:53:00">2021-10-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/10/13/curl%20%E5%BF%BD%E7%95%A5https%E7%9A%84ssl%E7%9A%84%E8%AF%81%E4%B9%A6%E9%AA%8C%E8%AF%81/" title="curl 忽略https的ssl的证书验证"><img src="/img/md/s-%E5%85%B6%E4%BB%96.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="curl 忽略https的ssl的证书验证"/></a><div class="content"><a class="title" href="/2021/10/13/curl%20%E5%BF%BD%E7%95%A5https%E7%9A%84ssl%E7%9A%84%E8%AF%81%E4%B9%A6%E9%AA%8C%E8%AF%81/" title="curl 忽略https的ssl的证书验证">curl 忽略https的ssl的证书验证</a><time datetime="2021-10-13T06:15:00.000Z" title="发表于 2021-10-13 14:15:00">2021-10-13</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2024 By Shook</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">By Node 14.17 on Kubernetes 1.25.2 </br> <a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/"><span>吉ICP备18005491号-1</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(()=>{
+  const $countDom = document.getElementById('twikoo-count')
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo-rouge.vercel.app/',
+      region: ''
+    }, null))
+  }
+
+  const getCount = () => {
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-rouge.vercel.app/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      $countDom.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const loadTwikoo = (bool = false) => {
+    if (typeof twikoo === 'object') {
+      init()
+      bool && $countDom && setTimeout(getCount,0)
+    } else {
+      getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(()=> {
+        init()
+        bool && $countDom && setTimeout(getCount,0)
+      })
+    }
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo(true)
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script><script>function loadLivere () {
+  if (typeof LivereTower === 'object') {
+    window.LivereTower.init()
+  }
+  else {
+    (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+    })(document, 'script');
+  }
+}
+
+if ('Twikoo' === 'Livere' || !false) {
+  if (false) btf.loadComment(document.getElementById('lv-container'), loadLivere)
+  else loadLivere()
+}
+else {
+  function loadOtherComment () {
+    loadLivere()
+  }
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
